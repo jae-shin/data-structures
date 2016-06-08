@@ -14,9 +14,12 @@ var Queue = function() {
   };
 
   someInstance.dequeue = function() {
+    if (start === end) { return undefined; }
+
     var popped = storage[start];
     delete storage[start];
     start++;
+    return popped;
   };
 
   someInstance.size = function() {
