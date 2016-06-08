@@ -7,14 +7,17 @@ var Stack = function() {
 
   // Implement the methods below
   someInstance.push = function(value) {
-    storage[index] = value;
     index++;
+    storage[index] = value;
   };
 
   someInstance.pop = function() {
-    var popped = storage.index;
-    delete storage.index;
-    index--;
+    if (index === 0) {
+      return undefined;
+    }
+    var popped = storage[index];
+    delete storage[index];
+    index--;    
     return popped;
   };
 
