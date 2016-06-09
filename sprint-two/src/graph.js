@@ -7,8 +7,8 @@ var Graph = function() {
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
-  this.storage[node] = [];
-  // this.storage[node] = {};
+  // this.storage[node] = [];
+  this.storage[node] = {};
 };
 
 // Return a boolean value indicating if the value passed to contains is 
@@ -25,25 +25,25 @@ Graph.prototype.removeNode = function(node) {
 // Returns a boolean indicating whether two specified nodes are connected. 
 // Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
-  return this.storage[fromNode].indexOf(toNode) > -1;
-  // return !!this.storage[fromNode][toNode]
+  // return this.storage[fromNode].indexOf(toNode) > -1;
+  return !!this.storage[fromNode][toNode];
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  this.storage[fromNode].push(toNode);
-  this.storage[toNode].push(fromNode);
-  // this.storage[fromNode][toNode] = this.storage[toNode];
-  // this.storage[toNode][fromNode] = this.storage[fromNode];
+  // this.storage[fromNode].push(toNode);
+  // this.storage[toNode].push(fromNode);
+  this.storage[fromNode][toNode] = this.storage[toNode];
+  this.storage[toNode][fromNode] = this.storage[fromNode];
  
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
-  this.storage[fromNode].splice(this.storage[fromNode].indexOf(toNode), 1);
-  this.storage[toNode].splice(this.storage[toNode].indexOf(fromNode), 1);
-  // delete this.storage[fromNode][toNode]
-  // delete this.storage[toNode][fromNode]
+  // this.storage[fromNode].splice(this.storage[fromNode].indexOf(toNode), 1);
+  // this.storage[toNode].splice(this.storage[toNode].indexOf(fromNode), 1);
+  delete this.storage[fromNode][toNode];
+  delete this.storage[toNode][fromNode];
 
 };
 
