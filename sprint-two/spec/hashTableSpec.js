@@ -18,6 +18,11 @@ describe('hashTable', function() {
     expect(hashTable.retrieve('Steven')).to.equal('Seagal');
   });
 
+  it('should return undefined for retreiving keys not present', function() {
+    hashTable.insert('Steven', 'Seagal');
+    expect(hashTable.retrieve('John')).to.equal(undefined);
+  });
+
   it('should not contain values that were not inserted', function() {
     hashTable.insert('Steven', 'Spielberg');
     expect(hashTable.retrieve('Steven')).not.to.equal('Seagal');
