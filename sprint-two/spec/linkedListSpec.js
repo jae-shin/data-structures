@@ -81,17 +81,31 @@ describe('doublyLinkedList', function() {
     expect(doublyLinkedList.tail.value).to.equal(5);
   });
 
+  it('should correctly store reference to previous node', function() {
+    doublyLinkedList.addToTail(1);
+    doublyLinkedList.addToTail(2);
+    doublyLinkedList.addToTail(3);
+    expect(doublyLinkedList.tail.value).to.equal(3);
+    expect(doublyLinkedList.tail.prev.value).to.equal(2);
+  });
+
   it('should remove the head from the list when removeHead is called', function() {
     doublyLinkedList.addToTail(4);
     doublyLinkedList.addToTail(5);
     expect(doublyLinkedList.head.value).to.equal(4);
+    expect(doublyLinkedList.tail.prev.value).to.equal(4);
     doublyLinkedList.removeHead();
     expect(doublyLinkedList.head.value).to.equal(5);
+    expect(doublyLinkedList.head.prev.value).to.equal(null);
   });
 
   it('should return the value of the former head when removeHead is called', function() {
     doublyLinkedList.addToTail(4);
     expect(doublyLinkedList.removeHead()).to.equal(4);
+    doublyLinkedList.addToTail(1);
+    doublyLinkedList.addToTail(2);
+    doublyLinkedList.addToTail(3);
+    expect(doublyLinkedList.removeHead()).to.equal(1);
   });
 
   it('should contain a value that was added', function() {
