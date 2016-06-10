@@ -5,13 +5,13 @@ var LinkedList = function() {
 
   list.addToTail = function(value) {
     var node = Node(value);
-    if (list.tail) {
+    if (list.tail) { 
       list.tail.next = node;
     }
     list.tail = node;
-
+    
     if (list.head === null) {
-      list.head = list.tail;
+      list.head = node;
     }
   };
 
@@ -24,12 +24,12 @@ var LinkedList = function() {
   };
 
   list.contains = function(target) {
-    var node = list.head;
-    while (node) {
-      if (node.value === target) {
+    var current = list.head;
+    while (current) {
+      if (current.value === target) {
         return true;
-      } 
-      node = node.next;
+      }
+      current = current.next;  
     }
     return false;
   };
