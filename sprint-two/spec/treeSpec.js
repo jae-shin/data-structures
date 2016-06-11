@@ -47,13 +47,15 @@ describe('advancedTree', function() {
   var advancedTree;
 
   beforeEach(function() {
-    advancedTree = advancedTree();
+    advancedTree = AdvancedTree();
   });
 
-  it('should have methods named "addChild" and "contains", and a property named "value"', function() {
+  it('should have methods named "addChild" and "contains" and "removeFromParent", and a property named "value" and "parent"', function() {
     expect(advancedTree.addChild).to.be.a('function');
     expect(advancedTree.contains).to.be.a('function');
+    expect(advancedTree.removeFromParent).to.be.a('function');
     expect(advancedTree.hasOwnProperty('value')).to.equal(true);
+    expect(advancedTree.hasOwnProperty('parent')).to.equal(true);
   });
 
   it('should add children to the advancedTree', function() {
@@ -84,5 +86,18 @@ describe('advancedTree', function() {
     advancedTree.children[1].addChild(8);
     expect(advancedTree.contains(7)).to.equal(true);
     expect(advancedTree.contains(8)).to.equal(true);
+  });
+
+  it('should correctly refer to parent', function() {
+    advancedTree.value = 10;
+    expect(advancedTree.parent).to.equal(null);
+    advancedTree.addChild(20);
+    expect(advancedTree.children[0].parent.value).to.equal(10);
+    advancedTree.addChild(21);
+    expect(advancedTree.children[1].parent.value).to.equal(10);
+    advancedTree.children[0].addChild(30);
+    expect(advancedTree.children[0].children[0].parent.value).to.equal(20);
+    advancedTree.children[1].addChild(31);
+    expect(advancedTree.children[1].children[0].parent.value).to.equal(21);
   });
 });
