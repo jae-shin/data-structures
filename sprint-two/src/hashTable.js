@@ -1,7 +1,7 @@
 
 
-var HashTable = function() {
-  this._limit = 8;
+var HashTable = function(limit) {
+  this._limit = limit || 8;
   this._storage = LimitedArray(this._limit);
   
   // how many buckets are initialized
@@ -17,15 +17,37 @@ HashTable.prototype._lowThreshold = function() {
   return Math.ceil(this._limit * 0.25);
 };
 
+HashTable.prototype._double = function() {
+  var newLimit = this._limit * 2;
+  var newHash = new HashTable(newLimit);
+
+  this._storage.each(function(bucket, index, storage) {
+    // traverse bucket
+    if (bucket) {
+      _.each(bucket, function(tuple) {
+        newHash.insert(tuple[0], tuple[1]);
+      });
+    }
+  });
+
+  // reassign old hash to new hash
+  this._limit = newHash._limit;
+  this._storage = newHash._storage;
+  this._occupancy = newHash._occupancy;
+};
 
 HashTable.prototype.insert = function(k, v) {
+
+  if (this._occupancy >= this._highThreshold()) {
+    // increase the limit of this._storage and rehash all keys
+    this._double();
+  }
+
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage.get(index);
   if (!bucket) {
     this._storage.set(index, [[k, v]]);
     
-    // increase occupancy
-    this._occupancy++;
   } else {
     var bucketIndex = bucket.findIndex(function(tuple) {
       return tuple[0] === k;
@@ -38,6 +60,9 @@ HashTable.prototype.insert = function(k, v) {
       bucket.push([k, v]);
     }
   }
+
+  // increase occupancy
+  this._occupancy++;
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -73,13 +98,12 @@ HashTable.prototype.remove = function(k) {
     var value = bucket[bucketIndex][1];
     bucket.splice(bucketIndex, 1);
     if (bucket.length === 0) {
-      this._occupancy--;
       this._storage[index] = undefined;
     }
+    this._occupancy--;
     return value;
   }
 };
-
 
 
 /*
