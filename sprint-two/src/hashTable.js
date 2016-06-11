@@ -4,7 +4,7 @@ var HashTable = function(limit) {
   this._limit = limit || 8;
   this._storage = LimitedArray(this._limit);
   
-  // how many buckets are initialized
+  // how many tuples are currently contained in all buckets
   this._occupancy = 0;
 };
 
@@ -55,6 +55,7 @@ HashTable.prototype.insert = function(k, v) {
     if (bucketIndex > -1) {
       // override
       bucket[bucketIndex][1] = v;
+      this._occupancy--;
     } else {
       bucket.push([k, v]);
     }
