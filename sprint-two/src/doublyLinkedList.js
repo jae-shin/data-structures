@@ -38,13 +38,23 @@ var DoublyLinkedList = function() {
 
     if (head) {
       list.head = head.next;
-      head.next.prev = null;
+      if (head.next) {
+        head.next.prev = null;
+      }
       return head.value;
     }
   };
 
   list.removeTail = function(value) {
+    var tail = list.tail; // grab tail node
 
+    if (tail) {
+      list.tail = tail.prev;
+      if (tail.prev) {
+        tail.prev.next = null;
+      }
+      return tail.value;
+    }
   };
 
   list.contains = function(target) {
