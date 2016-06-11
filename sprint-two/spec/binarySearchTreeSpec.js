@@ -36,4 +36,17 @@ describe('binarySearchTree', function() {
     binarySearchTree.depthFirstLog(func);
     expect(array).to.eql([5, 2, 3]);
   });
+
+  it('should correctly refer to parent', function() {
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(8);
+    expect(binarySearchTree.parent).to.equal(null);
+    expect(binarySearchTree.left.parent.value).to.equal(5);
+    expect(binarySearchTree.right.left.parent.value).to.equal(7);
+    expect(binarySearchTree.left.left.parent.value).to.equal(3);
+  });
 });
