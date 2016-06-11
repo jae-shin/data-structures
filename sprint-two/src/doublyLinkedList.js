@@ -4,13 +4,27 @@ var DoublyLinkedList = function() {
   list.tail = null;
 
   list.addToHead = function(value) {
+    var node = Node(value); // new node to add to head
+    var head = list.head; // grab old head node
+    
+    if (head) {
+      head.prev = node;
+      node.next = head;
+    }
+    list.head = node;
 
+    if (list.tail === null) {
+      list.tail = node;
+    }
   };
 
   list.addToTail = function(value) {
-    var node = Node(value);
-    if (list.tail) { 
-      list.tail.next = node;
+    var node = Node(value); // new node to add to tail
+    var tail = list.tail; // grab old tail node
+
+    if (tail) { 
+      tail.next = node;
+      node.prev = tail;
     }
     list.tail = node;
     
@@ -20,9 +34,11 @@ var DoublyLinkedList = function() {
   };
 
   list.removeHead = function() {
-    var head = list.head;
+    var head = list.head; // grab head node
+
     if (head) {
       list.head = head.next;
+      head.next.prev = null;
       return head.value;
     }
   };
