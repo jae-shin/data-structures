@@ -76,4 +76,70 @@ describe('hashTable', function() {
     hashTable.remove('Mr.');
     expect(hashTable._limit).to.equal(8);
   });
+
+  describe('occupancy', function() {
+    // occupancy
+    it ('increments occupancy when adding a new key/value pair', function() {
+      hashTable.insert('Steven', 'Tyler');
+      expect(hashTable._occupancy).to.equal(1);
+    });
+
+    it('also increments occupancy when keys evaluate to same index', function() {
+      var v1 = 'val1';
+      var v2 = 'val2';
+      var oldHashFunction = window.getIndexBelowMaxForKey;
+      window.getIndexBelowMaxForKey = function() { return 0; };
+      hashTable.insert(v1, v1);
+      hashTable.insert(v2, v2);
+      expect(hashTable._occupancy).to.equal(2);
+      window.getIndexBelowMaxForKey = oldHashFunction;
+    });
+    
+    it('does not increase occupancy when overriding a key/value pair', function() {
+      hashTable.insert('Steven', 'Tyler');
+      hashTable.insert('Alan', 'Turing');
+      hashTable.insert('Alan', 'Foobar');
+      expect(hashTable._occupancy).to.equal(2);
+    });
+
+    it ('decrements occupancy when removing key/value pair', function() {
+      hashTable.insert('Steven', 'Tyler');
+      hashTable.insert('Alan', 'Turing');
+      hashTable.remove('Alan');
+      expect(hashTable._occupancy).to.equal(1);
+    });
+
+    it('also decrements occupancy when keys evaluate to same index', function() {
+      var v1 = 'val1';
+      var v2 = 'val2';
+      var oldHashFunction = window.getIndexBelowMaxForKey;
+      window.getIndexBelowMaxForKey = function() { return 0; };
+      hashTable.insert(v1, v1);
+      hashTable.insert(v2, v2);
+      hashTable.remove(v2);
+      expect(hashTable._occupancy).to.equal(1);
+      window.getIndexBelowMaxForKey = oldHashFunction;
+    });
+
+    it('does not decrease occupancy when trying to remove non-existent keys', function() {
+      hashTable.insert('Steven', 'Tyler');
+      expect(hashTable._occupancy).to.equal(1);
+      hashTable.remove('Alan');
+      expect(hashTable._occupancy).to.equal(1);
+    });
+  });
+  
+  describe('threshold methods', function() {
+    it('returns correct value for highThreshold', function() {
+      expect(hashTable._highThreshold()).to.equal(6);
+    });
+
+    it('returns correct value for lowThreshold', function() {
+      expect(hashTable._lowThreshold()).to.equal(2);
+    });
+  });
+
+  describe('rehashing', function() {
+
+  });
 });
