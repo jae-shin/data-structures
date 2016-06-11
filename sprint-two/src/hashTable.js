@@ -17,8 +17,7 @@ HashTable.prototype._lowThreshold = function() {
   return Math.ceil(this._limit * 0.25);
 };
 
-HashTable.prototype._double = function() {
-  var newLimit = this._limit * 2;
+HashTable.prototype._reHash = function(newLimit) {
   var newHash = new HashTable(newLimit);
 
   this._storage.each(function(bucket, index, storage) {
@@ -40,7 +39,7 @@ HashTable.prototype.insert = function(k, v) {
 
   if (this._occupancy >= this._highThreshold()) {
     // increase the limit of this._storage and rehash all keys
-    this._double();
+    this._reHash(this._limit * 2);
   }
 
   var index = getIndexBelowMaxForKey(k, this._limit);
@@ -83,6 +82,11 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
+
+  if (this._occupancy <= this._lowThreshold()) {
+    this._reHash(Math.floor(this._limit / 2));
+  }
+
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage.get(index);
 
