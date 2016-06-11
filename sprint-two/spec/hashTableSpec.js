@@ -138,8 +138,4 @@ describe('hashTable', function() {
       expect(hashTable._lowThreshold()).to.equal(2);
     });
   });
-
-  describe('rehashing', function() {
-
-  });
 });
