@@ -96,7 +96,7 @@ describe('doublyLinkedList', function() {
     expect(doublyLinkedList.tail.prev.value).to.equal(4);
     doublyLinkedList.removeHead();
     expect(doublyLinkedList.head.value).to.equal(5);
-    expect(doublyLinkedList.head.prev.value).to.equal(null);
+    expect(doublyLinkedList.head.prev).to.equal(null);
   });
 
   it('should return the value of the former head when removeHead is called', function() {
