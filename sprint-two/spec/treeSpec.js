@@ -42,3 +42,47 @@ describe('tree', function() {
   });
 
 });
+
+describe('advancedTree', function() {
+  var advancedTree;
+
+  beforeEach(function() {
+    advancedTree = advancedTree();
+  });
+
+  it('should have methods named "addChild" and "contains", and a property named "value"', function() {
+    expect(advancedTree.addChild).to.be.a('function');
+    expect(advancedTree.contains).to.be.a('function');
+    expect(advancedTree.hasOwnProperty('value')).to.equal(true);
+  });
+
+  it('should add children to the advancedTree', function() {
+    advancedTree.addChild(5);
+    expect(advancedTree.children[0].value).to.equal(5);
+  });
+
+  it('should return true for a value that the advancedTree contains', function() {
+    advancedTree.addChild(5);
+    expect(advancedTree.contains(5)).to.equal(true);
+  });
+
+  it('should return false for a value that was not added', function() {
+    advancedTree.addChild(5);
+    expect(advancedTree.contains(6)).to.equal(false);
+  });
+
+  it('should be able to add children to a advancedTree\'s child', function() {
+    advancedTree.addChild(5);
+    advancedTree.children[0].addChild(6);
+    expect(advancedTree.children[0].children[0].value).to.equal(6);
+  });
+
+  it('should correctly detect nested children', function() {
+    advancedTree.addChild(5);
+    advancedTree.addChild(6);
+    advancedTree.children[0].addChild(7);
+    advancedTree.children[1].addChild(8);
+    expect(advancedTree.contains(7)).to.equal(true);
+    expect(advancedTree.contains(8)).to.equal(true);
+  });
+});
