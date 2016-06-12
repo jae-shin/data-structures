@@ -97,15 +97,10 @@ describe('tree', function() {
         }
       });
 
-      // NaN
       expect(tree.value).to.equal(undefined);
-      // 10
       expect(tree.children[0].value).to.equal(10);
-      // 12
       expect(tree.children[1].value).to.equal(12);
-      // 14
       expect(tree.children[0].children[0].value).to.equal(14);
-      // 16
       expect(tree.children[1].children[0].value).to.equal(16);
     });
   });
