@@ -2,9 +2,10 @@ var Tree = function(value) {
   var newTree = {};
   _.extend(newTree, treeMethods);
   newTree.value = value;
+  newTree.parent = null; // parent should be a tree, init to null
 
   // your code here
-  newTree.children = [];  // fix me
+  newTree.children = [];
 
   return newTree;
 };
@@ -12,7 +13,9 @@ var Tree = function(value) {
 var treeMethods = {};
 
 treeMethods.addChild = function(value) {
-  this.children.push(Tree(value));
+  var child = Tree(value);
+  child.parent = this;
+  this.children.push(child);
 };
 
 treeMethods.contains = function(target) {
@@ -29,7 +32,18 @@ treeMethods.contains = function(target) {
 
 };
 
+treeMethods.removeFromParent = function() {
+  // this method returns the parent tree
+  var parent = this.parent;
+  if (parent) {
+    parent.children.splice(parent.children.indexOf(this), 1);
+    this.parent = null;
+    return parent;
+  }
 
+  // if parent does not exist
+  return undefined;
+};
 
 /*
  * Complexity: What is the time complexity of the above functions?
