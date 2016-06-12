@@ -1,6 +1,5 @@
+// Queue for the binary search tree
 var BSTQ = function() {
-  // Hey! Rewrite in the new style. Your code will wind up looking very similar,
-  // but try not not reference your old code in writing the new style.
   var obj = {};
   obj.storage = {};
   obj.start = 1;
@@ -76,15 +75,27 @@ var binaryMethods = {
   },
   breadthFirstLog: function(cb) {
     var queue = BSTQ();
-    cb(this.value);
-    var generation = [this.left, this.right];
-    if (this.left) {
-      cb(this.left);
 
+    var queueNode = function(tree) {
+      cb(tree.value);
+
+      if (tree.left) {
+        queue.enqueue(tree.left);
+      }
+
+      if (tree.right) {
+        queue.enqueue(tree.right);
+      }
+    };
+
+    queue.enqueue(this);
+
+    // dequeue, grab tree, run BFS on that tree
+    // push to the same queue, queue needs to be a private property of the BST object
+    while (queue.size() > 0) {
+      var nextTree = queue.dequeue();
+      queueNode(nextTree);
     }
-
-
-
   },
   contains: function(value) {
     if (this.value === value) { return true; }
