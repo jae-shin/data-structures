@@ -61,6 +61,8 @@ var binaryMethods = {
         newChild.parent = this;
         this.right = newChild;
       }
+    } else {
+      // do nothing
     }
   },
   depthFirstLog: function(cb) {
@@ -98,10 +100,13 @@ var binaryMethods = {
     }
   },
   contains: function(value) {
-    if (this.value === value) { return true; }
-
-    return !!(this.left && this.left.contains(value) ||
-              this.right && this.right.contains(value));
+    if (this.value === value) { 
+      return true; 
+    } else if (value < this.value) {
+      return !!(this.left && this.left.contains(value));
+    } else if (value > this.value) {
+      return !!(this.right && this.right.contains(value));
+    }
   }
 };
 /*
